@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Корпоративный сайт | Портфолио верстальщика</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/ScrollTrigger.min.js"></script>
+    <style>
+        /* Стили из основного сайта */
+        .glitch {
+            position: relative;
+        }
+
+        .glitch::before, .glitch::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.8;
+        }
+
+        .glitch::before {
+            color: #0ff;
+            z-index: -1;
+            animation: glitch-effect 3s infinite;
+        }
+
+        .glitch::after {
+            color: #f0f;
+            z-index: -2;
+            animation: glitch-effect 2s infinite reverse;
+        }
+
+        @keyframes glitch-effect {
+            0% { transform: translate(0); }
+            20% { transform: translate(-3px, 3px); }
+            40% { transform: translate(-3px, -3px); }
+            60% { transform: translate(3px, 3px); }
+            80% { transform: translate(3px, -3px); }
+            100% { transform: translate(0); }
+        }
+
+        .float {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .neon-text {
+            text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #0073e6, 0 0 20px #0073e6;
+        }
+
+        .scanline {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                to bottom,
+                rgba(255,255,255,0) 0%,
+                rgba(255,255,255,0.03) 50%,
+                rgba(255,255,255,0) 100%
+            );
+            background-size: 100% 8px;
+            pointer-events: none;
+            animation: scanline 8s linear infinite;
+        }
+
+        @keyframes scanline {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(100%); }
+        }
+
+        .btn-hover {
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .btn-hover::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: 0.5s;
+            z-index: -1;
+        }
+
+        .btn-hover:hover::before {
+            left: 100%;
+        }
+
+        /* Специфичные стили для страницы проекта */
+        .project-demo {
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+            position: relative;
+        }
+
+        .project-demo::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 30px;
+            background: #333;
+            border-radius: 8px 8px 0 0;
+            z-index: 2;
+        }
+
+        .project-demo::after {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: 15px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #ff5f56;
+            box-shadow: 20px 0 0 #ffbd2e, 40px 0 0 #27c93f;
+            z-index: 3;
+        }
+
+        .tech-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            margin-right: 8px;
+            margin-bottom: 8px;
+        }
+
+        .back-btn {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: 0.5s;
+        }
+
+        .back-btn:hover::before {
+            left: 100%;
+        }
+
+        .back-btn:hover {
+            transform: translateX(-5px);
+        }
+
+        .feature-card {
+            transition: all 0.3s ease;
+            transform-style: preserve-3d;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px) rotateX(5deg);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white font-sans overflow-x-hidden">
+    <!-- Сканирующая линия (эффект ЭЛТ) -->
+    <div class="scanline"></div>
+
+    <!-- Шапка -->
+    <header class="py-6 bg-gray-900/80 backdrop-blur-lg border-b border-gray-800 sticky top-0 z-50">
+        <div class="container mx-auto px-6 flex justify-between items-center">
+            <a href="index.html" class="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-blue-600">
+                Портфолио
+            </a>
+            
+            <a href="index.html" class="back-btn flex items-center gap-2 px-6 py-3 bg-gray-800 hover:bg-gray-700 rounded-full transition-all duration-300">
+                <i class="fas fa-arrow-left"></i>
+                <span>Назад к работам</span>
+            </a>
+        </div>
+    </header>
+
+    <!-- Основной контент -->
+    <main>
+        <!-- Герой секция проекта -->
+        <section class="pt-20 pb-16 relative overflow-hidden">
+            <div class="absolute inset-0 z-0">
+                <div class="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-blue-900/20 to-purple-900/20"></div>
+                <div class="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle,rgba(0,0,0,0)0%,rgba(0,0,0,0.9)100%)]"></div>
+            </div>
+
+            <div class="container mx-auto px-6 z-10">
+                <div class="flex flex-col lg:flex-row gap-12 items-center">
+                    <div class="lg:w-1/2">
+                        <div class="mb-6 flex gap-3 flex-wrap">
+                            <span class="tech-badge bg-blue-600/30 text-blue-300">HTML5</span>
+                            <span class="tech-badge bg-purple-600/30 text-purple-300">CSS3</span>
+                            <span class="tech-badge bg-yellow-600/30 text-yellow-300">JavaScript</span>
+                            <span class="tech-badge bg-green-600/30 text-green-300">GSAP</span>
+                        </div>
+                        
+                        <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
+                            <span class="glitch" data-text="Лендинг продаж">Лендинг продаж</span>
+                        </h1>
+                        
+                        <p class="text-xl md:text-2xl mb-8 opacity-90 leading-relaxed">
+                            Современный лендинг для Iкомпании с анимациями и с адаптивным, собственным дизайном.
+                        </p>
+                        
+                        <div class="flex flex-wrap gap-4">
+                            <a href="https://karkasdom.info/" class="btn-hover px-6 py-3 bg-blue-600 hover:bg-blue-700 rounded-lg font-bold transition-all duration-300 transform hover:scale-105 flex items-center gap-2">
+                                <i class="fas fa-external-link-alt"></i>
+                                Посетить сайт
+                            </a>
+                            <a href="#" class="btn-hover px-6 py-3 bg-gray-800 hover:bg-gray-700 rounded-lg font-bold transition-all duration-300 transform hover:scale-105 flex items-center gap-2">
+                                <i class="fab fa-github"></i>
+                                Исходный код
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <div class="lg:w-1/2 relative">
+                        <div class="project-demo">
+                            <img src="./assets/KarkasHTML/prom(21).jpg" alt="Корпоративный сайт" class="w-full h-auto rounded-b-lg">
+                        </div>
+                        <div class="absolute -top-5 -left-5 w-32 h-32 rounded-full bg-blue-400/20 blur-3xl -z-10"></div>
+                        <div class="absolute -bottom-5 -right-5 w-32 h-32 rounded-full bg-purple-400/20 blur-3xl -z-10"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Детали проекта -->
+        <section class="py-16 bg-gray-800/50 backdrop-blur-lg">
+            <div class="container mx-auto px-6">
+                <h2 class="text-3xl md:text-4xl font-bold mb-12 text-center">
+                    <span class="glitch" data-text="О ПРОЕКТЕ">О ПРОЕКТЕ</span>
+                </h2>
+                
+                <div class="grid md:grid-cols-2 gap-8 mb-16">
+                    <div>
+                        <h3 class="text-2xl font-bold mb-4">Задача</h3>
+                        <p class="opacity-90 leading-relaxed mb-6">
+                            Создать современный landing сайт для компании, который будет показывать услуги и проекты, 
+                            привлекать новых клиентов и предоставлять удобный и красочный интерфейс для существующих партнеров.
+                        </p>
+                        <p class="opacity-90 leading-relaxed">
+                            Основные требования: адаптивный дизайн, анимации для вовлечения пользователей, быстрая загрузка и 
+                            удобный, читаемый код.
+                        </p>
+                    </div>
+                    
+                    <div>
+                        <h3 class="text-2xl font-bold mb-4">Решение</h3>
+                        <p class="opacity-90 leading-relaxed mb-6">
+                            Разработал чистую, семантическую верстку с использованием современных технологий HTML5, CSS3 и JavaScript. 
+                            Реализовал плавные анимации с GSAP для создания динамичного интерфейса.
+                        </p>
+                        <p class="opacity-90 leading-relaxed">
+                            Оптимизировал производительность сайта, достигнув 92+ баллов в Lighthouse. Создал адаптивный дизайн, 
+                            который одинаково хорошо выглядит на всех устройствах.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="bg-gray-900/50 p-8 rounded-xl border border-gray-700 mb-16">
+                    <h3 class="text-2xl font-bold mb-6 text-center">Ключевые особенности</h3>
+                    
+                    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <div class="feature-card bg-gray-800 p-6 rounded-lg border border-gray-700">
+                            <div class="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center mb-4">
+                                <i class="fas fa-mobile-alt text-xl"></i>
+                            </div>
+                            <h4 class="text-xl font-bold mb-2">Адаптивность</h4>
+                            <p class="opacity-80">Идеальное отображение на всех устройствах от смартфонов до широкоформатных мониторов</p>
+                        </div>
+                        
+                        <div class="feature-card bg-gray-800 p-6 rounded-lg border border-gray-700">
+                            <div class="w-12 h-12 bg-purple-600 rounded-full flex items-center justify-center mb-4">
+                                <i class="fas fa-bolt text-xl"></i>
+                            </div>
+                            <h4 class="text-xl font-bold mb-2">Быстрая загрузка</h4>
+                            <p class="opacity-80">Оптимизированный код и ресурсы для минимального времени загрузки</p>
+                        </div>
+                        
+                        <div class="feature-card bg-gray-800 p-6 rounded-lg border border-gray-700">
+                            <div class="w-12 h-12 bg-green-600 rounded-full flex items-center justify-center mb-4">
+                                <i class="fas fa-chart-line text-xl"></i>
+                            </div>
+                            <h4 class="text-xl font-bold mb-2">SEO-оптимизация</h4>
+                            <p class="opacity-80">Семантическая верстка и метаданные для лучшей индексации</p>
+                        </div>
+                        
+                        <div class="feature-card bg-gray-800 p-6 rounded-lg border border-gray-700">
+                            <div class="w-12 h-12 bg-yellow-600 rounded-full flex items-center justify-center mb-4">
+                                <i class="fas fa-paint-brush text-xl"></i>
+                            </div>
+                            <h4 class="text-xl font-bold mb-2">Уникальный дизайн</h4>
+                            <p class="opacity-80">Индивидуальный подход без использования шаблонных решений</p>
+                        </div>
+                        
+                        <div class="feature-card bg-gray-800 p-6 rounded-lg border border-gray-700">
+                            <div class="w-12 h-12 bg-red-600 rounded-full flex items-center justify-center mb-4">
+                                <i class="fas fa-code text-xl"></i>
+                            </div>
+                            <h4 class="text-xl font-bold mb-2">Чистый код</h4>
+                            <p class="opacity-80">Структурированный, комментированный код по стандартам</p>
+                        </div>
+                        
+                        <div class="feature-card bg-gray-800 p-6 rounded-lg border border-gray-700">
+                            <div class="w-12 h-12 bg-cyan-600 rounded-full flex items-center justify-center mb-4">
+                                <i class="fas fa-cogs text-xl"></i>
+                            </div>
+                            <h4 class="text-xl font-bold mb-2">Анимации</h4>
+                            <p class="opacity-80">Плавные, ненавязчивые анимации для улучшения UX</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-gradient-to-br from-gray-900 to-blue-900/50 p-8 rounded-xl border border-gray-700">
+                    <h3 class="text-2xl font-bold mb-6 text-center">Технологии</h3>
+                    
+                    <div class="flex flex-wrap justify-center gap-4">
+                        <div class="flex items-center gap-3 bg-gray-800/50 px-6 py-3 rounded-full border border-gray-700">
+                            <i class="fab fa-html5 text-2xl text-orange-500"></i>
+                            <span class="font-medium">HTML5</span>
+                        </div>
+                        
+                        <div class="flex items-center gap-3 bg-gray-800/50 px-6 py-3 rounded-full border border-gray-700">
+                            <i class="fab fa-css3-alt text-2xl text-blue-400"></i>
+                            <span class="font-medium">CSS3</span>
+                        </div>
+                        
+                        <div class="flex items-center gap-3 bg-gray-800/50 px-6 py-3 rounded-full border border-gray-700">
+                            <i class="fab fa-js text-2xl text-yellow-400"></i>
+                            <span class="font-medium">JavaScript</span>
+                        </div>
+                        
+                        <div class="flex items-center gap-3 bg-gray-800/50 px-6 py-3 rounded-full border border-gray-700">
+                            <i class="fab fa-sass text-2xl text-pink-500"></i>
+                            <span class="font-medium">Sass</span>
+                        </div>
+                        
+                        <div class="flex items-center gap-3 bg-gray-800/50 px-6 py-3 rounded-full border border-gray-700">
+                            <i class="fas fa-bolt text-2xl text-purple-500"></i>
+                            <span class="font-medium">GSAP</span>
+                        </div>
+                        
+                        <div class="flex items-center gap-3 bg-gray-800/50 px-6 py-3 rounded-full border border-gray-700">
+                            <i class="fab fa-gulp text-2xl text-red-500"></i>
+                            <span class="font-medium">Gulp</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Скриншоты -->
+        <section class="py-16 bg-gray-900">
+            <div class="container mx-auto px-6">
+                <h2 class="text-3xl md:text-4xl font-bold mb-12 text-center">
+                    <span class="glitch" data-text="СКРИНШОТЫ">СКРИНШОТЫ</span>
+                </h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="project-demo overflow-hidden rounded-lg">
+                        <img src="./assets/LandShoes/home.png" alt="Главная страница" class="w-full h-auto transition-transform duration-500 hover:scale-105">
+                    </div>
+                    
+                    <div class="project-demo overflow-hidden rounded-lg">
+                        <img src="./assets/LandShoes/catalog.png" alt="Услуги" class="w-full h-auto transition-transform duration-500 hover:scale-105">
+                    </div>
+                    
+                    <div class="project-demo overflow-hidden rounded-lg">
+                        <img src="./assets/LandShoes/quiz.png" alt="Контакты" class="w-full h-auto transition-transform duration-500 hover:scale-105">
+                    </div>
+                    
+                    <div class="project-demo overflow-hidden rounded-lg">
+                        <img src="./assets/LandShoes/Deliever.png" alt="Блог" class="w-full h-auto transition-transform duration-500 hover:scale-105">
+                    </div>
+                    
+                    <div class="project-demo overflow-hidden rounded-lg">
+                        <img src="./assets/LandShoes/WhyWe.png" alt="Команда" class="w-full h-auto transition-transform duration-500 hover:scale-105">
+                    </div>
+                    
+                    <div class="project-demo overflow-hidden rounded-lg">
+                        <img src="./assets/LandShoes/WhyWe.png" alt="Мобильная версия" class="w-full h-auto transition-transform duration-500 hover:scale-105">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Отзыв клиента -->
+        <section class="py-16 bg-gradient-to-br from-gray-800 to-purple-900/30">
+            <div class="container mx-auto px-6">
+                <div class="max-w-4xl mx-auto bg-gray-900/50 p-8 md:p-12 rounded-xl border border-gray-700 relative overflow-hidden">
+                    <div class="absolute -top-20 -right-20 w-40 h-40 rounded-full bg-purple-600/20 blur-3xl"></div>
+                    <div class="absolute -bottom-20 -left-20 w-40 h-40 rounded-full bg-blue-600/20 blur-3xl"></div>
+                    
+                    <div class="relative z-10">
+                        <div class="flex items-center gap-4 mb-6">
+                            <div class="w-16 h-16 rounded-full overflow-hidden border-2 border-white/20">
+                                <img src="./assets/face/i (1).webp" alt="Клиент" class="w-full h-full object-cover">
+                            </div>
+                            <div>
+                                <h4 class="text-xl font-bold">Высокий J.</h4>
+                                <p class="opacity-80">Head Director</p>
+                            </div>
+                        </div>
+                        
+                        <blockquote class="text-lg md:text-xl italic mb-8 opacity-90 leading-relaxed">
+                            "Чистая и аккуратная верстка адаптивного лендинга с каталогом и квиз-формой. Хорошо структурированный код, современный дизайн с анимациями и плавными переходами. Отлично реализован пошаговый опрос с валидацией и прогресс-баром. Проект подходит для реального использования и лёгкой доработки. Рекомендую!"
+                        </blockquote>
+                        
+                        <div class="flex gap-2">
+                            <i class="fas fa-star text-yellow-400"></i>
+                            <i class="fas fa-star text-yellow-400"></i>
+                            <i class="fas fa-star text-yellow-400"></i>
+                            <i class="fas fa-star text-yellow-400"></i>
+                            <i class="fas fa-star text-yellow-400"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA -->
+        <section class="py-20 bg-gray-900">
+            <div class="container mx-auto px-6 text-center">
+                <h2 class="text-3xl md:text-4xl font-bold mb-6">
+                    <span class="glitch" data-text="ЗАИНТЕРЕСОВАНЫ В СОТРУДНИЧЕСТВЕ?">ЗАИНТЕРЕСОВАНЫ В СОТРУДНИЧЕСТВЕ?</span>
+                </h2>
+                
+                <p class="text-xl mb-10 max-w-2xl mx-auto opacity-90">
+                    Хотите такой же качественный и современный сайт для вашего бизнеса? Свяжитесь со мной для обсуждения деталей!
+                </p>
+                
+                <div class="flex flex-wrap justify-center gap-6">
+                    <a href="./index.html#contact" class="btn-hover px-8 py-4 bg-blue-600 hover:bg-blue-700 rounded-full font-bold text-lg transition-all duration-300 transform hover:scale-105">
+                        Написать мне
+                    </a>
+                    <a href="./index.html#project" class="btn-hover px-8 py-4 bg-transparent border-2 border-white hover:bg-white hover:text-gray-900 rounded-full font-bold text-lg transition-all duration-300 transform hover:scale-105">
+                        Другие работы
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Футер -->
+    <footer class="py-12 bg-black/80 backdrop-blur-lg border-t border-gray-800">
+        <div class="container mx-auto px-6">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-6 md:mb-0">
+                    <div class="text-2xl font-bold mb-2">Портфолио верстальщика</div>
+                    <div class="opacity-70">© 2025 Все права защищены</div>
+                </div>
+
+                <div class="flex gap-6">
+                        <a href="https://github.com/KiryaBasik" class="w-10 h-10 rounded-full bg-gray-800 hover:bg-blue-600 flex items-center justify-center transition-all">
+                            <i class="fab fa-github"></i>
+                        </a>
+                        <a href="https://id.vk.com/account/#/main" class="w-10 h-10 rounded-full bg-gray-800 hover:bg-blue-400 flex items-center justify-center transition-all">
+                            <i class="fab fa-vk"></i>
+                        </a>
+                        <a href="https://web.telegram.org/k/#@KiryaBasik" class="w-10 h-10 rounded-full bg-gray-800 hover:bg-blue-500 flex items-center justify-center transition-all">
+                            <i class="fab fa-telegram"></i>
+                        </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Инициализация анимаций
+        document.addEventListener('DOMContentLoaded', function() {
+            gsap.registerPlugin(ScrollTrigger);
+
+            // Анимация появления элементов при скролле
+            gsap.utils.toArray('.feature-card, .project-demo, [class*="text-"]').forEach(el => {
+                gsap.from(el, {
+                    scrollTrigger: {
+                        trigger: el,
+                        start: "top 80%",
+                        toggleActions: "play none none none"
+                    },
+                    opacity: 0,
+                    y: 50,
+                    duration: 0.8,
+                    ease: "power2.out"
+                });
+            });
+
+            // Плавный скролл для якорей
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+
+                    const targetId = this.getAttribute('href');
+                    if (targetId === '#') return;
+
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 80,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Алгоритмическая система взаимопомощи | Портфолио разработчика</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/ScrollTrigger.min.js"></script>
+    <style>
+        .glitch {
+            position: relative;
+        }
+
+        .glitch::before, .glitch::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.8;
+        }
+
+        .glitch::before {
+            color: #0ff;
+            z-index: -1;
+            animation: glitch-effect 3s infinite;
+        }
+
+        .glitch::after {
+            color: #f0f;
+            z-index: -2;
+            animation: glitch-effect 2s infinite reverse;
+        }
+
+        @keyframes glitch-effect {
+            0% { transform: translate(0); }
+            20% { transform: translate(-3px, 3px); }
+            40% { transform: translate(-3px, -3px); }
+            60% { transform: translate(3px, 3px); }
+            80% { transform: translate(3px, -3px); }
+            100% { transform: translate(0); }
+        }
+
+        .float {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .neon-text {
+            text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #0073e6, 0 0 20px #0073e6;
+        }
+
+        .scanline {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                to bottom,
+                rgba(255,255,255,0) 0%,
+                rgba(255,255,255,0.03) 50%,
+                rgba(255,255,255,0) 100%
+            );
+            background-size: 100% 8px;
+            pointer-events: none;
+            animation: scanline 8s linear infinite;
+        }
+
+        @keyframes scanline {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(100%); }
+        }
+
+        .btn-hover {
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .btn-hover::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: 0.5s;
+            z-index: -1;
+        }
+
+        .btn-hover:hover::before {
+            left: 100%;
+        }
+
+        .project-demo {
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+            position: relative;
+        }
+
+        .project-demo::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 30px;
+            background: #333;
+            border-radius: 8px 8px 0 0;
+            z-index: 2;
+        }
+
+        .project-demo::after {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: 15px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #ff5f56;
+            box-shadow: 20px 0 0 #ffbd2e, 40px 0 0 #27c93f;
+            z-index: 3;
+        }
+
+        .tech-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            margin-right: 8px;
+            margin-bottom: 8px;
+        }
+
+        .back-btn {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: 0.5s;
+        }
+
+        .back-btn:hover::before {
+            left: 100%;
+        }
+
+        .back-btn:hover {
+            transform: translateX(-5px);
+        }
+
+        .feature-card {
+            transition: all 0.3s ease;
+            transform-style: preserve-3d;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px) rotateX(5deg);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+        }
+
+        .ton-icon {
+            color: #0088cc;
+            font-size: 1.5rem;
+            margin-right: 10px;
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .profit-badge {
+            animation: pulse 2s infinite, float 4s ease-in-out infinite;
+        }
+        
+        .blockchain-bg {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white font-sans overflow-x-hidden">
+    <!-- Сканирующая линия (эффект ЭЛТ) -->
+    <div class="scanline"></div>
+
+    <!-- Шапка -->
+    <header class="py-6 bg-gray-900/80 backdrop-blur-lg border-b border-gray-800 sticky top-0 z-50">
+        <div class="container mx-auto px-6 flex justify-between items-center">
+            <a href="index.html" class="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-cyan-600">
+                Портфолио
+            </a>
+            
+            <a href="index.html" class="back-btn flex items-center gap-2 px-6 py-3 bg-gray-800 hover:bg-gray-700 rounded-full transition-all duration-300">
+                <i class="fas fa-arrow-left"></i>
+                <span>Назад к работам</span>
+            </a>
+        </div>
+    </header>
+
+    <!-- Основной контент -->
+    <main>
+        <!-- Герой секция проекта -->
+        <section class="pt-20 pb-16 relative overflow-hidden blockchain-bg">
+            <div class="absolute inset-0 z-0">
+                <div class="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-blue-900/20 to-purple-900/20"></div>
+                <div class="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle,rgba(0,0,0,0)0%,rgba(0,0,0,0.9)100%)]"></div>
+            </div>
+
+            <div class="container mx-auto px-6 z-10">
+                <div class="flex flex-col lg:flex-row gap-12 items-center">
+                    <div class="lg:w-1/2">
+                        <div class="mb-6 flex gap-3 flex-wrap">
+                            <span class="tech-badge bg-blue-600/30 text-blue-300">Blockchain</span>
+                            <span class="tech-badge bg-purple-600/30 text-purple-300">TON</span>
+                            <span class="tech-badge bg-yellow-600/30 text-yellow-300">Smart Contracts</span>
+                            <span class="tech-badge bg-green-600/30 text-green-300">API</span>
+                            <span class="tech-badge bg-red-600/30 text-red-300">JavaScript</span>
+                            <span class="tech-badge bg-cyan-600/30 text-cyan-300">Безопасность</span>
+                        </div>
+                        
+                        <div class="relative inline-block mb-4">
+                            <span class="profit-badge absolute -top-4 -right-4 bg-gradient-to-r from-yellow-500 to-yellow-600 text-xs font-bold px-3 py-1 rounded-full">
+                                +150%
+                            </span>
+                            <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold">
+                                <span class="glitch" data-text="Алгоритмическая система взаимопомощи">Алгоритмическая система взаимопомощи</span>
+                            </h1>
+                        </div>
+                        
+                        <p class="text-xl md:text-2xl mb-8 opacity-90 leading-relaxed">
+                            Инновационная платформа на блокчейне TON, которая позволяет участникам получать до 150% от взноса всего за 3 недели.
+                            Полностью прозрачная система с автоматическими выплатами и защитой от мошенничества.
+                        </p>
+                        
+                        <div class="flex flex-wrap gap-4">
+                            <a href="https://github.com/KiryaBasik" class="btn-hover px-6 py-3 bg-blue-600 hover:bg-blue-700 rounded-lg font-bold transition-all duration-300 transform hover:scale-105 flex items-center gap-2">
+                                <i class="fab fa-github"></i>
+                                GitHub
+                            </a>
+                            <a href="#" class="btn-hover px-6 py-3 bg-gray-800 hover:bg-gray-700 rounded-lg font-bold transition-all duration-300 transform hover:scale-105 flex items-center gap-2">
+                                <i class="fas fa-book"></i>
+                                Документация
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <div class="lg:w-1/2 relative">
+                        <div class="project-demo">
+                            <img src="./assets/LUDO/header.png" alt="Алгоритмическая система взаимопомощи" class="w-full h-auto rounded-b-lg">
+                        </div>
+                        <div class="absolute -top-5 -left-5 w-32 h-32 rounded-full bg-blue-400/20 blur-3xl -z-10"></div>
+                        <div class="absolute -bottom-5 -right-5 w-32 h-32 rounded-full bg-purple-400/20 blur-3xl -z-10"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Детали проекта -->
+        <section class="py-16 bg-gray-800/50 backdrop-blur-lg">
+            <div class="container mx-auto px-6">
+                <h2 class="text-3xl md:text-4xl font-bold mb-12 text-center">
+                    <span class="glitch" data-text="О ПРОЕКТЕ">О ПРОЕКТЕ</span>
+                </h2>
+                
+                <div class="grid md:grid-cols-2 gap-8 mb-16">
+                    <div>
+                        <h3 class="text-2xl font-bold mb-4">Задача</h3>
+                        <p class="opacity-90 leading-relaxed mb-6">
+                            Создать полностью децентрализованную систему взаимопомощи на блокчейне TON с гарантированными выплатами,
+                            защитой от мошенничества и автоматическим распределением средств между участниками.
+                        </p>
+                        <p class="opacity-90 leading-relaxed">
+                            Основные требования: прозрачность всех операций, минимальные комиссии, защита от атак,
+                            удобный интерфейс для участников и интеграция с кошельками TON.
+                        </p>
+                    </div>
+                    
+                    <div>
+                        <h3 class="text-2xl font-bold mb-4">Решение</h3>
+                        <p class="opacity-90 leading-relaxed mb-6">
+                            Разработал алгоритмическую систему с умными контрактами на TON, которая автоматически распределяет
+                            средства между участниками по принципу "первый вошел - первый получил" с гарантированной доходностью.
+                        </p>
+                        <p class="opacity-90 leading-relaxed">
+                            Реализовал защиту от сибиллинга, верификацию участников, систему реферальных бонусов
+                            и автоматические выплаты в криптовалюте TON.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="bg-gray-900/50 p-8 rounded-xl border border-gray-700 mb-16">
+                    <h3 class="text-2xl font-bold mb-6 text-center">Ключевые особенности</h3>
+                    
+                    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <div class="feature-card bg-gray-800 p-6 rounded-lg border border-gray-700">
+                            <div class="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center mb-4">
+                                <i class="fas fa-chart-line text-xl"></i>
+                            </div>
+                            <h4 class="text-xl font-bold mb-2">До 150% прибыли</h4>
+                            <p class="opacity-80">Гарантированная доходность за 3 недели</p>
+                        </div>
+                        
+                        <div class="feature-card bg-gray-800 p-6 rounded-lg border border-gray-700">
+                            <div class="w-12 h-12 bg-purple-600 rounded-full flex items-center justify-center mb-4">
+                                <i class="fab fa-telegram text-xl"></i>
+                            </div>
+                            <h4 class="text-xl font-bold mb-2">TON Blockchain</h4>
+                            <p class="opacity-80">Быстрые и дешевые транзакции</p>
+                        </div>
+                        
+                        <div class="feature-card bg-gray-800 p-6 rounded-lg border border-gray-700">
+                            <div class="w-12 h-12 bg-green-600 rounded-full flex items-center justify-center mb-4">
+                                <i class="fas fa-lock text-xl"></i>
+                            </div>
+                            <h4 class="text-xl font-bold mb-2">Безопасность</h4>
+                            <p class="opacity-80">Умные контракты защищают ваши средства</p>
+                        </div>
+                        
+                        <div class="feature-card bg-gray-800 p-6 rounded-lg border border-gray-700">
+                            <div class="w-12 h-12 bg-yellow-600 rounded-full flex items-center justify-center mb-4">
+                                <i class="fas fa-robot text-xl"></i>
+                            </div>
+                            <h4 class="text-xl font-bold mb-2">Автоматизация</h4>
+                            <p class="opacity-80">Все выплаты происходят автоматически</p>
+                        </div>
+                        
+                        <div class="feature-card bg-gray-800 p-6 rounded-lg border border-gray-700">
+                            <div class="w-12 h-12 bg-red-600 rounded-full flex items-center justify-center mb-4">
+                                <i class="fas fa-users text-xl"></i>
+                            </div>
+                            <h4 class="text-xl font-bold mb-2">Рефералы</h4>
+                            <p class="opacity-80">Дополнительный доход за привлечение</p>
+                        </div>
+                        
+                        <div class="feature-card bg-gray-800 p-6 rounded-lg border border-gray-700">
+                            <div class="w-12 h-12 bg-cyan-600 rounded-full flex items-center justify-center mb-4">
+                                <i class="fas fa-eye text-xl"></i>
+                            </div>
+                            <h4 class="text-xl font-bold mb-2">Прозрачность</h4>
+                            <p class="opacity-80">Все операции видны в блокчейне</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Секция с примерами выплат -->
+                <div class="mb-16">
+                    <h3 class="text-2xl font-bold mb-8 text-center">Примеры выплат</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="bg-gray-800 p-6 rounded-lg border border-gray-700">
+                            <div class="flex items-center mb-4">
+                                <i class="ton-icon fab fa-telegram"></i>
+                                <h4 class="font-bold text-lg">Минимальный взнос</h4>
+                            </div>
+                            <div class="bg-gray-900/50 p-4 rounded-lg mb-4">
+                                <div class="flex justify-between items-center">
+                                    <span class="opacity-80">Сумма:</span>
+                                    <span class="font-bold">10 TON</span>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="opacity-80">Доход:</span>
+                                    <span class="font-bold text-green-400">15 TON</span>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="opacity-80">Срок:</span>
+                                    <span class="font-bold">21 день</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-gray-800 p-6 rounded-lg border border-gray-700 transform scale-105">
+                            <div class="absolute top-0 right-0 bg-yellow-500 text-black text-xs font-bold px-2 py-1 rounded-bl-lg rounded-tr-lg">
+                                Популярный
+                            </div>
+                            <div class="flex items-center mb-4">
+                                <i class="ton-icon fab fa-telegram"></i>
+                                <h4 class="font-bold text-lg">Стандартный взнос</h4>
+                            </div>
+                            <div class="bg-gray-900/50 p-4 rounded-lg mb-4">
+                                <div class="flex justify-between items-center">
+                                    <span class="opacity-80">Сумма:</span>
+                                    <span class="font-bold">50 TON</span>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="opacity-80">Доход:</span>
+                                    <span class="font-bold text-green-400">75 TON</span>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="opacity-80">Срок:</span>
+                                    <span class="font-bold">21 день</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-gray-800 p-6 rounded-lg border border-gray-700">
+                            <div class="flex items-center mb-4">
+                                <i class="ton-icon fab fa-telegram"></i>
+                                <h4 class="font-bold text-lg">Максимальный взнос</h4>
+                            </div>
+                            <div class="bg-gray-900/50 p-4 rounded-lg mb-4">
+                                <div class="flex justify-between items-center">
+                                    <span class="opacity-80">Сумма:</span>
+                                    <span class="font-bold">200 TON</span>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="opacity-80">Доход:</span>
+                                    <span class="font-bold text-green-400">300 TON</span>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="opacity-80">Срок:</span>
+                                    <span class="font-bold">21 день</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-gradient-to-br from-gray-900 to-blue-900/50 p-8 rounded-xl border border-gray-700">
+                    <h3 class="text-2xl font-bold mb-6 text-center">Технологии</h3>
+                    
+                    <div class="flex flex-wrap justify-center gap-4">
+                        <div class="flex items-center gap-3 bg-gray-800/50 px-6 py-3 rounded-full border border-gray-700">
+                            <i class="fab fa-telegram text-2xl text-blue-400"></i>
+                            <span class="font-medium">TON Blockchain</span>
+                        </div>
+                        
+                        <div class="flex items-center gap-3 bg-gray-800/50 px-6 py-3 rounded-full border border-gray-700">
+                            <i class="fas fa-file-contract text-2xl text-purple-500"></i>
+                            <span class="font-medium">Smart Contracts</span>
+                        </div>
+                        
+                        <div class="flex items-center gap-3 bg-gray-800/50 px-6 py-3 rounded-full border border-gray-700">
+                            <i class="fab fa-js text-2xl text-yellow-400"></i>
+                            <span class="font-medium">JavaScript</span>
+                        </div>
+                        
+                        <div class="flex items-center gap-3 bg-gray-800/50 px-6 py-3 rounded-full border border-gray-700">
+                            <i class="fas fa-database text-2xl text-green-500"></i>
+                            <span class="font-medium">REST API</span>
+                        </div>
+                        
+                        <div class="flex items-center gap-3 bg-gray-800/50 px-6 py-3 rounded-full border border-gray-700">
+                            <i class="fas fa-shield-alt text-2xl text-cyan-500"></i>
+                            <span class="font-medium">Безопасность</span>
+                        </div>
+                        
+                        <div class="flex items-center gap-3 bg-gray-800/50 px-6 py-3 rounded-full border border-gray-700">
+                            <i class="fas fa-wallet text-2xl text-red-500"></i>
+                            <span class="font-medium">TON Wallet</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Скриншоты -->
+        <section class="py-16 bg-gray-900">
+            <div class="container mx-auto px-6">
+                <h2 class="text-3xl md:text-4xl font-bold mb-12 text-center">
+                    <span class="glitch" data-text="СКРИНШОТЫ">СКРИНШОТЫ</span>
+                </h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="project-demo overflow-hidden rounded-lg">
+                        <div class="demo-content">
+                            <img src="./assets/LUDO/header.png" alt="Главная страница" class="w-full h-auto transition-transform duration-500 hover:scale-105">
+                        </div>
+                    </div>
+                    
+                    <div class="project-demo overflow-hidden rounded-lg">
+                        <div class="demo-content">
+                            <img src="./assets/LUDO/faq1.png" alt="Личный кабинет" class="w-full h-auto transition-transform duration-500 hover:scale-105">
+                        </div>
+                    </div>
+                    
+                    <div class="project-demo overflow-hidden rounded-lg">
+                        <div class="demo-content">
+                            <img src="./assets/LUDO/stavka1.png" alt="История выплат" class="w-full h-auto transition-transform duration-500 hover:scale-105">
+                        </div>
+                    </div>
+                    
+                    <div class="project-demo overflow-hidden rounded-lg">
+                        <div class="demo-content">
+                            <img src="./assets/LUDO/calc.png" alt="Реферальная система" class="w-full h-auto transition-transform duration-500 hover:scale-105">
+                        </div>
+                    </div>
+                    
+                    <div class="project-demo overflow-hidden rounded-lg">
+                        <div class="demo-content">
+                            <img src="./assets/LUDO/footer.png" alt="Статистика" class="w-full h-auto transition-transform duration-500 hover:scale-105">
+                        </div>
+                    </div>
+                    
+                    <div class="project-demo overflow-hidden rounded-lg">
+                        <div class="demo-content">
+                            <img src="./assets/LUDO/22.png" alt="Мобильная версия" class="w-full h-auto transition-transform duration-500 hover:scale-105">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Отзыв клиента -->
+        <section class="py-16 bg-gradient-to-br from-gray-800 to-blue-900/30">
+            <div class="container mx-auto px-6">
+                <div class="max-w-4xl mx-auto bg-gray-900/50 p-8 md:p-12 rounded-xl border border-gray-700 relative overflow-hidden">
+                    <div class="absolute -top-20 -right-20 w-40 h-40 rounded-full bg-blue-600/20 blur-3xl"></div>
+                    <div class="absolute -bottom-20 -left-20 w-40 h-40 rounded-full bg-purple-600/20 blur-3xl"></div>
+                    
+                    <div class="relative z-10">
+                        <div class="flex items-center gap-4 mb-6">
+                            <div class="w-16 h-16 rounded-full overflow-hidden border-2 border-white/20">
+                                <img src="./assets/face/i (1).webp" alt="Клиент" class="w-full h-full object-cover">
+                            </div>
+                            <div>
+                                <h4 class="text-xl font-bold">Александр Петров</h4>
+                                <p class="opacity-80">Директор пирамиды</p>
+                            </div>
+                        </div>
+                        
+                        <blockquote class="text-lg md:text-xl italic mb-8 opacity-90 leading-relaxed">
+                            "Спасибо большое за выполненную работу. Все очень понравилось, все сделано в срок и с высоким качеством.
+                            Алгоритмическая система взаимопомощи работает отлично. Сайт выполнен на высшем уровне, все работает быстро и стабильно.
+                            Рекомендую всем, кто хочет себе личный сайт к бизнесу!!"
+                        </blockquote>
+                        
+                        <div class="flex gap-2">
+                            <i class="fas fa-star text-yellow-400"></i>
+                            <i class="fas fa-star text-yellow-400"></i>
+                            <i class="fas fa-star text-yellow-400"></i>
+                            <i class="fas fa-star text-yellow-400"></i>
+                            <i class="fas fa-star text-yellow-400"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA -->
+        <section class="py-20 bg-gray-900">
+            <div class="container mx-auto px-6 text-center">
+                <h2 class="text-3xl md:text-4xl font-bold mb-6">
+                    <span class="glitch" data-text="Хотите личный сайт?">Хотите личный сайт?</span>
+                </h2>
+                
+                <p class="text-xl mb-10 max-w-2xl mx-auto opacity-90">
+                    Подавайте заявку на разработку сайта прямо сейчас!
+                    Мы создадим для вас уникальный, высококачественный и полностью адаптивный сайт
+                </p>
+                
+                <div class="flex flex-wrap justify-center gap-6">
+                    <a href="index.html#contact" class="btn-hover px-8 py-4 bg-blue-600 hover:bg-blue-700 rounded-full font-bold text-lg transition-all duration-300 transform hover:scale-105">
+                        К заполнению заявки
+                    </a>
+                    <a href="index.html#project" class="btn-hover px-8 py-4 bg-transparent border-2 border-white hover:bg-white hover:text-gray-900 rounded-full font-bold text-lg transition-all duration-300 transform hover:scale-105">
+                        Все проекты
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Футер -->
+    <footer class="py-12 bg-black/80 backdrop-blur-lg border-t border-gray-800">
+        <div class="container mx-auto px-6">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-6 md:mb-0">
+                    <div class="text-2xl font-bold mb-2">Портфолио разработчика</div>
+                    <div class="opacity-70">© 2025 Все права защищены</div>
+                </div>
+
+                <div class="flex gap-6">
+                        <a href="https://github.com/KiryaBasik" class="w-10 h-10 rounded-full bg-gray-800 hover:bg-blue-600 flex items-center justify-center transition-all">
+                            <i class="fab fa-github"></i>
+                        </a>
+                        <a href="https://id.vk.com/account/#/main" class="w-10 h-10 rounded-full bg-gray-800 hover:bg-blue-400 flex items-center justify-center transition-all">
+                            <i class="fab fa-vk"></i>
+                        </a>
+                        <a href="https://web.telegram.org/k/#@KiryaBasik" class="w-10 h-10 rounded-full bg-gray-800 hover:bg-blue-500 flex items-center justify-center transition-all">
+                            <i class="fab fa-telegram"></i>
+                        </a>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Инициализация анимаций
+        document.addEventListener('DOMContentLoaded', function() {
+            gsap.registerPlugin(ScrollTrigger);
+
+            // Анимация появления элементов при скролле
+            gsap.utils.toArray('.feature-card, .project-demo, [class*="text-"]').forEach(el => {
+                gsap.from(el, {
+                    scrollTrigger: {
+                        trigger: el,
+                        start: "top 80%",
+                        toggleActions: "play none none none"
+                    },
+                    opacity: 0,
+                    y: 50,
+                    duration: 0.8,
+                    ease: "power2.out"
+                });
+            });
+
+            // Плавный скролл для якорей
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+
+                    const targetId = this.getAttribute('href');
+                    if (targetId === '#') return;
+
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 80,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+
+            // Обработка сворачивания/разворачивания скриншотов
+            document.querySelectorAll('.project-demo').forEach(demo => {
+                demo.addEventListener('click', function(e) {
+                    // Проверяем, был ли клик по области кнопок (первые 50px сверху)
+                    if (e.clientY - this.getBoundingClientRect().top < 50) {
+                        // Проверяем позицию клика относительно кнопок
+                        const xPos = e.clientX - this.getBoundingClientRect().left;
+                        
+                        // Желтая кнопка (свернуть) - позиция ~35px
+                        if (xPos >= 35 && xPos <= 45 && !this.classList.contains('collapsed')) {
+                            this.classList.add('collapsed');
+                        }
+                        // Зеленая кнопка (развернуть) - позиция ~55px
+                        else if (xPos >= 55 && xPos <= 65 && this.classList.contains('collapsed')) {
+                            this.classList.remove('collapsed');
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

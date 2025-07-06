@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Портфолио | Верстальщик HTML/CSS/JS & WordPress</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/ScrollTrigger.min.js"></script>
+    <style>
+        /* TV эффект */
+        .tv-effect {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+        
+        .tv-screen {
+            width: 90%;
+            height: 80%;
+            background: #111;
+            border: 15px solid #333;
+            border-radius: 10px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 30px rgba(0,255,255,0.5);
+        }
+        
+        .tv-static {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(
+                0deg,
+                #000 0%,
+                #000 50%,
+                #111 50%,
+                #111 100%
+            );
+            background-size: 100% 4px;
+            opacity: 0.8;
+            animation: static 0.1s infinite;
+        }
+        
+        .tv-channel {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #fff;
+            font-size: 2rem;
+            text-align: center;
+            opacity: 0;
+        }
+        
+        .tv-power-btn {
+            position: absolute;
+            bottom: -40px;
+            right: 20px;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: #f00;
+            box-shadow: 0 0 10px rgba(255,0,0,0.8);
+            animation: pulse 1s infinite alternate;
+        }
+        
+        @keyframes static {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(4px); }
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+        
+        /* Другие анимации */
+        .glitch {
+            position: relative;
+        }
+        
+        .glitch::before, .glitch::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.8;
+        }
+        
+        .glitch::before {
+            color: #0ff;
+            z-index: -1;
+            animation: glitch-effect 3s infinite;
+        }
+        
+        .glitch::after {
+            color: #f0f;
+            z-index: -2;
+            animation: glitch-effect 2s infinite reverse;
+        }
+        
+        @keyframes glitch-effect {
+            0% { transform: translate(0); }
+            20% { transform: translate(-3px, 3px); }
+            40% { transform: translate(-3px, -3px); }
+            60% { transform: translate(3px, 3px); }
+            80% { transform: translate(3px, -3px); }
+            100% { transform: translate(0); }
+        }
+        
+        .float {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        .project-card {
+            transition: all 0.3s ease;
+            transform-style: preserve-3d;
+            perspective: 1000px;
+        }
+        
+        .project-card:hover {
+            transform: translateY(-10px) rotateX(5deg);
+            box-shadow: 0 25px 40px rgba(0,0,0,0.3);
+        }
+        
+        .neon-text {
+            text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #0073e6, 0 0 20px #0073e6;
+        }
+        
+        .scanline {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                to bottom,
+                rgba(255,255,255,0) 0%,
+                rgba(255,255,255,0.03) 50%,
+                rgba(255,255,255,0) 100%
+            );
+            background-size: 100% 8px;
+            pointer-events: none;
+            animation: scanline 8s linear infinite;
+        }
+        
+        @keyframes scanline {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(100%); }
+        }
+        
+        .btn-hover {
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+        
+        .btn-hover::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: 0.5s;
+            z-index: -1;
+        }
+        
+        .btn-hover:hover::before {
+            left: 100%;
+        }
+        
+        .typewriter {
+            overflow: hidden;
+            border-right: 3px solid #fff;
+            white-space: nowrap;
+            animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
+        }
+        
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
+        }
+        
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: #fff }
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white font-sans overflow-x-hidden">
+    <!-- TV эффект при загрузке -->
+    <div class="tv-effect">
+        <div class="tv-screen">
+            <div class="tv-static"></div>
+            <div class="tv-channel">
+                <div class="text-4xl mb-4">CHANNEL 404</div>
+                <div class="text-xl">LOADING PORTFOLIO...</div>
+            </div>
+            <div class="tv-power-btn"></div>
+        </div>
+    </div>
+    
+    <!-- Основной контент -->
+    <div class="main-content opacity-0">
+        <!-- Сканирующая линия (эффект ЭЛТ) -->
+        <div class="scanline"></div>
+        
+        <!-- Герой секция -->
+        <section class="min-h-screen flex items-center justify-center relative overflow-hidden">
+            <div class="absolute inset-0 z-0">
+                <div class="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-blue-900/20 to-purple-900/20"></div>
+                <div class="absolute top-0 left-0 w-full h-full bg-[url('https://images.unsplash.com/photo-1639762681057-408e52192e55?q=80&w=2232&auto=format&fit=crop')] bg-cover bg-center opacity-20"></div>
+                <div class="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle,rgba(0,0,0,0)0%,rgba(0,0,0,0.9)100%)]"></div>
+            </div>
+            
+            <div class="container mx-auto px-6 z-10 text-center">
+                <h1 class="text-5xl md:text-7xl font-bold mb-6 glitch" data-text="ПРИВЕТ, Я ВЕРСТАЛЬЩИК">
+                    <span class="neon-text">ПРИВЕТ, Я ВЕРСТАЛЬЩИК</span>
+                </h1>
+                <div class="typewriter text-2xl md:text-4xl mb-8 font-mono bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-blue-600">
+                    <span class="hidden md:inline">HTML/CSS/JS & WordPress разработчик</span>
+                    <span class="md:hidden">HTML/CSS/JS & WordPress<br><span class="inline-block">разработчик</span></span>
+                </div>
+                <div class="max-w-2xl mx-auto text-lg md:text-xl mb-12 opacity-90">
+                    Создаю современные, адаптивные и интерактивные веб-сайты с уникальным дизайном и продуманным UX
+                </div>
+                <div class="flex justify-center gap-6">
+                    <a href="#projects" class="btn-hover px-8 py-4 bg-blue-600 hover:bg-blue-700 rounded-full font-bold text-lg transition-all duration-300 transform hover:scale-105">
+                        Мои работы
+                    </a>
+                    <a href="#contact" class="btn-hover px-8 py-4 bg-transparent border-2 border-white hover:bg-white hover:text-gray-900 rounded-full font-bold text-lg transition-all duration-300 transform hover:scale-105">
+                        Связаться
+                    </a>
+                </div>
+            </div>
+            <div class="absolute bottom-10 left-0 w-full flex justify-center animate-bounce">
+                <a href="#about" class="text-white text-4xl">
+                    <i class="fas fa-chevron-down"></i>
+                </a>
+            </div>
+        </section>
+        
+        <!-- Обо мне -->
+        <section id="about" class="py-20 bg-gray-800/50 backdrop-blur-lg">
+            <div class="container mx-auto px-6">
+                <h2 class="text-4xl md:text-5xl font-bold mb-16 text-center">
+                    <span class="glitch" data-text="ОБО МНЕ">ОБО МНЕ</span>
+                </h2>
+                
+                <div class="flex flex-col lg:flex-row items-center gap-12">
+                    <div class="lg:w-1/2 relative">
+                        <div class="float">
+                            <div class="w-64 h-64 md:w-80 md:h-80 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full mx-auto relative overflow-hidden border-4 border-white/20 shadow-2xl">
+                                <img src="./img/ya.jfif" alt="Фото" class="w-full h-full object-cover">
+                            </div>
+                            <div class="absolute -top-5 -left-5 w-32 h-32 rounded-full bg-blue-400/20 blur-3xl"></div>
+                            <div class="absolute -bottom-5 -right-5 w-32 h-32 rounded-full bg-purple-400/20 blur-3xl"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="lg:w-1/2">
+                        <h3 class="text-3xl font-bold mb-6">Кто я?</h3>
+                        <p class="text-lg mb-6 opacity-90 leading-relaxed">
+                            Профессиональный верстальщик с 3+ годами опыта в создании современных веб-сайтов. 
+                            Специализируюсь на чистой, семантической верстке с использованием HTML5, CSS3 и JavaScript.
+                        </p>
+                        <p class="text-lg mb-8 opacity-90 leading-relaxed">
+                            Также разрабатываю сайты на WordPress - от простых блогов до сложных корпоративных порталов 
+                            с кастомными темами и плагинами. Уделяю особое внимание производительности, доступности 
+                            и кросс-браузерной совместимости.
+                        </p>
+                        
+                        <div class="grid grid-cols-2 gap-4 mb-8">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center">
+                                    <i class="fab fa-html5 text-white"></i>
+                                </div>
+                                <span class="font-medium">HTML5</span>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-full bg-blue-400 flex items-center justify-center">
+                                    <i class="fab fa-css3-alt text-white"></i>
+                                </div>
+                                <span class="font-medium">CSS3</span>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-full bg-yellow-500 flex items-center justify-center">
+                                    <i class="fab fa-js text-white"></i>
+                                </div>
+                                <span class="font-medium">JavaScript</span>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-full bg-blue-800 flex items-center justify-center">
+                                    <i class="fab fa-wordpress text-white"></i>
+                                </div>
+                                <span class="font-medium">WordPress</span>
+                            </div>
+                        </div>
+                        
+                        <a href="#contact" class="inline-block px-8 py-3 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full font-bold text-lg transition-all duration-300 transform hover:scale-105 hover:shadow-lg">
+                            Написать мне
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Мои работы -->
+        <section id="projects" class="py-20 bg-gray-900">
+            <div class="container mx-auto px-6">
+                <h2 class="text-4xl md:text-5xl font-bold mb-16 text-center">
+                    <span class="glitch" data-text="МОИ РАБОТЫ">МОИ РАБОТЫ</span>
+                </h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Проект 1 -->
+                    <div class="project-card bg-gray-800 rounded-xl overflow-hidden transition-all duration-500 hover:z-10">
+                        <div class="relative overflow-hidden h-60">
+                            <img src="./assets/KarkasHTML/1.jpg" alt="Проект 1" class="w-full h-full object-cover transition-transform duration-500 hover:scale-110">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+                            <div class="absolute bottom-0 left-0 p-6">
+                                <h3 class="text-2xl font-bold mb-2">Корпоративный сайт</h3>
+                                <div class="flex gap-2 flex-wrap">
+                                    <span class="px-3 py-1 bg-blue-600/30 text-blue-300 rounded-full text-sm">HTML</span>
+                                    <span class="px-3 py-1 bg-purple-600/30 text-purple-300 rounded-full text-sm">CSS</span>
+                                    <span class="px-3 py-1 bg-yellow-600/30 text-yellow-300 rounded-full text-sm">JS</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <p class="mb-4 opacity-90">Современный корпоративный сайт для строительной компании с анимациями и адаптивным дизайном.</p>
+                            <a href="second.html" class="inline-block px-6 py-2 bg-transparent border border-blue-500 text-blue-400 hover:bg-blue-500 hover:text-white rounded-full transition-all duration-300 relative overflow-hidden group">
+                                <span class="relative z-10">Посмотреть</span>
+                                <span class="absolute inset-0 bg-gradient-to-r from-blue-600 to-blue-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
+                                <span class="absolute top-0 left-0 w-full h-0.5 bg-blue-400 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></span>
+                                <span class="absolute bottom-0 left-0 w-full h-0.5 bg-blue-400 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-right delay-100"></span>
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <!-- Проект 2 -->
+                    <div class="project-card bg-gray-800 rounded-xl overflow-hidden transition-all duration-500 hover:z-10">
+                        <div class="relative overflow-hidden h-60">
+                            <img src="./assets/ShopWoo/main.png" alt="Проект 2" class="w-full h-full object-cover transition-transform duration-500 hover:scale-110">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+                            <div class="absolute bottom-0 left-0 p-6">
+                                <h3 class="text-2xl font-bold mb-2">Интернет-магазин</h3>
+                                <div class="flex gap-2 flex-wrap">
+                                    <span class="px-3 py-1 bg-blue-800/30 text-blue-300 rounded-full text-sm">WordPress</span>
+                                    <span class="px-3 py-1 bg-green-600/30 text-green-300 rounded-full text-sm">WooCommerce</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <p class="mb-4 opacity-90">Полнофункциональный интернет-магазин на WordPress с кастомной темой и интеграцией платежей.</p>
+                            <a href="WP1.html" class="inline-block px-6 py-2 bg-transparent border border-blue-500 text-blue-400 hover:bg-blue-500 hover:text-white rounded-full transition-all duration-300">
+                                Посмотреть
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <!-- Проект 3 -->
+                    <div class="project-card bg-gray-800 rounded-xl overflow-hidden transition-all duration-500 hover:z-10">
+                        <div class="relative overflow-hidden h-60">
+                            <img src="./assets/LandShoes/home.png" alt="Проект 3" class="w-full h-full object-cover transition-transform duration-500 hover:scale-110">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+                            <div class="absolute bottom-0 left-0 p-6">
+                                <h3 class="text-2xl font-bold mb-2">Лендинг</h3>
+                                <div class="flex gap-2 flex-wrap">
+                                    <span class="px-3 py-1 bg-blue-600/30 text-blue-300 rounded-full text-sm">HTML</span>
+                                    <span class="px-3 py-1 bg-purple-600/30 text-purple-300 rounded-full text-sm">CSS</span>
+                                    <span class="px-3 py-1 bg-yellow-600/30 text-yellow-300 rounded-full text-sm">JS</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <p class="mb-4 opacity-90">Высококонверсионный лендинг для digital-агентства с параллакс эффектами и анимациями.</p>
+                            <a href="landing.html" class="inline-block px-6 py-2 bg-transparent border border-blue-500 text-blue-400 hover:bg-blue-500 hover:text-white rounded-full transition-all duration-300">
+                                Посмотреть
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <!-- Проект 4 -->
+                    <div class="project-card bg-gray-800 rounded-xl overflow-hidden transition-all duration-500 hover:z-10">
+                        <div class="relative overflow-hidden h-60">
+                            <img src="./assets/Cars/1.jpg" alt="Проект 4" class="w-full h-full object-cover transition-transform duration-500 hover:scale-110">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+                            <div class="absolute bottom-0 left-0 p-6">
+                                <h3 class="text-2xl font-bold mb-2">Магазин аренды</h3>
+                                <div class="flex gap-2 flex-wrap">
+                                    <span class="px-3 py-1 bg-blue-800/30 text-blue-300 rounded-full text-sm">WordPress</span>
+                                    <span class="px-3 py-1 bg-green-600/30 text-green-300 rounded-full text-sm">Elementor</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <p class="mb-4 opacity-90">Тематический блог на WordPress с кастомным дизайном и оптимизацией под SEO.</p>
+                            <a href="rent.html" class="inline-block px-6 py-2 bg-transparent border border-blue-500 text-blue-400 hover:bg-blue-500 hover:text-white rounded-full transition-all duration-300">
+                                Посмотреть
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <!-- Проект 5 -->
+                    <div class="project-card bg-gray-800 rounded-xl overflow-hidden transition-all duration-500 hover:z-10">
+                        <div class="relative overflow-hidden h-60">
+                            <img src="./assets/WordBIO/main.png" alt="Проект 5" class="w-full h-full object-cover transition-transform duration-500 hover:scale-110">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+                            <div class="absolute bottom-0 left-0 p-6">
+                                <h3 class="text-2xl font-bold mb-2">Портал</h3>
+                                <div class="flex gap-2 flex-wrap">
+                                    <span class="px-3 py-1 bg-blue-800/30 text-blue-300 rounded-full text-sm">WordPress</span>
+                                    <span class="px-3 py-1 bg-green-600/30 text-green-300 rounded-full text-sm">Elementor</span>
+                                    <span class="px-3 py-1 bg-yellow-600/30 text-yellow-300 rounded-full text-sm">Custom JS</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <p class="mb-4 opacity-90">Веб-портал с личным кабинетом, интеграцией API и сложной фронтенд-логикой.</p>
+                            <a href="#" class="inline-block px-6 py-2 bg-transparent border border-blue-500 text-blue-400 hover:bg-blue-500 hover:text-white rounded-full transition-all duration-300">
+                                Посмотреть
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <!-- Проект 6 -->
+                    <div class="project-card bg-gray-800 rounded-xl overflow-hidden transition-all duration-500 hover:z-10">
+                        <div class="relative overflow-hidden h-60">
+                            <img src="./assets/LUDO/header.png" alt="Проект 3" class="w-full h-full object-cover transition-transform duration-500 hover:scale-110">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+                            <div class="absolute bottom-0 left-0 p-6">
+                                <h3 class="text-2xl font-bold mb-2">Крипто лендинг</h3>
+                                <div class="flex gap-2 flex-wrap">
+                                    <span class="px-3 py-1 bg-blue-600/30 text-blue-300 rounded-full text-sm">HTML</span>
+                                    <span class="px-3 py-1 bg-purple-600/30 text-purple-300 rounded-full text-sm">CSS</span>
+                                    <span class="px-3 py-1 bg-yellow-600/30 text-yellow-300 rounded-full text-sm">JS</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <p class="mb-4 opacity-90">Высококонверсионный лендинг для крипто-агентства с приятным дизайном и анимациями.</p>
+                            <a href="landing.html" class="inline-block px-6 py-2 bg-transparent border border-blue-500 text-blue-400 hover:bg-blue-500 hover:text-white rounded-full transition-all duration-300">
+                                Посмотреть
+                            </a>
+                        </div>
+                    </div>
+                    <!-- Еще проекты -->
+                    <div class="project-card bg-gray-800 rounded-xl overflow-hidden transition-all duration-500 hover:z-10 flex items-center justify-center">
+                        <div class="text-center p-8">
+                            <div class="w-20 h-20 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-6">
+                                <i class="fas fa-plus text-3xl"></i>
+                            </div>
+                            <h3 class="text-2xl font-bold mb-4">Еще проекты</h3>
+                            <p class="mb-6 opacity-90">Скоро здесь появятся новые работы</p>
+                            <a href="#contact" class="inline-block px-6 py-2 bg-blue-600 hover:bg-blue-700 rounded-full transition-all duration-300">
+                                Заказать сайт
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Другие проекты -->
+        <section id="other-projects" class="py-20 bg-gradient-to-br from-gray-900 to-purple-900/50">
+            <div class="container mx-auto px-6">
+                <h2 class="text-4xl md:text-5xl font-bold mb-16 text-center">
+                    <span class="glitch" data-text="ДРУГИЕ ПРОЕКТЫ">ДРУГИЕ ПРОЕКТЫ</span>
+                </h2>
+                
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-4xl mx-auto">
+                    <!-- Телеграм боты -->
+                    <a href="#telegram-bots" class="group relative overflow-hidden rounded-xl bg-gray-800/50 backdrop-blur-lg p-8 border border-gray-700 hover:border-purple-500 transition-all duration-500 h-48 flex flex-col justify-center items-center text-center btn-hover transform hover:scale-105">
+                        <div class="absolute inset-0 bg-gradient-to-br from-purple-500/10 to-purple-500/30 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                        <div class="relative z-10">
+                            <div class="w-16 h-16 bg-purple-600 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-purple-500 transition-all duration-300 shadow-lg">
+                                <i class="fab fa-telegram text-2xl"></i>
+                            </div>
+                            <h3 class="text-2xl font-bold mb-2">Телеграм боты</h3>
+                            <p class="opacity-80 group-hover:opacity-100 transition-opacity duration-300">Автоматизация, парсеры, CRM системы</p>
+                        </div>
+                    </a>
+                    
+                    <!-- Веб приложения -->
+                    <a href="#web-apps" class="group relative overflow-hidden rounded-xl bg-gray-800/50 backdrop-blur-lg p-8 border border-gray-700 hover:border-blue-500 transition-all duration-500 h-48 flex flex-col justify-center items-center text-center btn-hover transform hover:scale-105">
+                        <div class="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-blue-500/30 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                        <div class="relative z-10">
+                            <div class="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-blue-500 transition-all duration-300 shadow-lg">
+                                <i class="fas fa-globe text-2xl"></i>
+                            </div>
+                            <h3 class="text-2xl font-bold mb-2">Веб приложения</h3>
+                            <p class="opacity-80 group-hover:opacity-100 transition-opacity duration-300">SPA, админки, кастомизированные решения</p>
+                        </div>
+                    </a>
+                    
+                    <!-- API -->
+                    <a href="#api" class="group relative overflow-hidden rounded-xl bg-gray-800/50 backdrop-blur-lg p-8 border border-gray-700 hover:border-green-500 transition-all duration-500 h-48 flex flex-col justify-center items-center text-center btn-hover transform hover:scale-105">
+                        <div class="absolute inset-0 bg-gradient-to-br from-green-500/10 to-green-500/30 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                        <div class="relative z-10">
+                            <div class="w-16 h-16 bg-green-600 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-green-500 transition-all duration-300 shadow-lg">
+                                <i class="fas fa-code text-2xl"></i>
+                            </div>
+                            <h3 class="text-2xl font-bold mb-2">AI решения</h3>
+                            <p class="opacity-80 group-hover:opacity-100 transition-opacity duration-300">Автоматизация, обучение по использованию нейросетей</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Контакты -->
+        <section id="contact" class="py-20 bg-gradient-to-br from-gray-900 to-blue-900/50">
+            <div class="container mx-auto px-6">
+                <h2 class="text-4xl md:text-5xl font-bold mb-16 text-center">
+                    <span class="glitch" data-text="СВЯЗАТЬСЯ СО МНОЙ">СВЯЗАТЬСЯ СО МНОЙ</span>
+                </h2>
+                
+                <div class="flex flex-col lg:flex-row gap-12">
+                    <div class="lg:w-1/2">
+                        <h3 class="text-3xl font-bold mb-6">Давайте работать вместе!</h3>
+                        <p class="text-lg mb-8 opacity-90 leading-relaxed">
+                            Если вам нужен современный, качественно сверстанный сайт или у вас есть вопросы - 
+                            напишите мне, и я свяжусь с вами в ближайшее время.
+                        </p>
+                        
+                        <div class="space-y-6">
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 rounded-full bg-blue-600 flex items-center justify-center">
+                                    <i class="fas fa-envelope text-white"></i>
+                                </div>
+                                <div>
+                                    <div class="text-sm opacity-70">Email</div>
+                                    <div class="font-medium">example@mail.com</div>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 rounded-full bg-green-600 flex items-center justify-center">
+                                    <i class="fab fa-telegram text-white"></i>
+                                </div>
+                                <div>
+                                    <div class="text-sm opacity-70">Telegram</div>
+                                    <div class="font-medium">@username</div>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 rounded-full bg-blue-400 flex items-center justify-center">
+                                    <i class="fab fa-vk text-white"></i>
+                                </div>
+                                <div>
+                                    <div class="text-sm opacity-70">ВКонтакте</div>
+                                    <div class="font-medium">vk.com/username</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="lg:w-1/2">
+                        <form class="bg-gray-800/50 backdrop-blur-lg p-8 rounded-xl border border-gray-700">
+                            <div class="mb-6">
+                                <label for="name" class="block mb-2 font-medium">Ваше имя</label>
+                                <input type="text" id="name" class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all">
+                            </div>
+                            
+                            <div class="mb-6">
+                                <label for="email" class="block mb-2 font-medium">Email</label>
+                                <input type="email" id="email" class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all">
+                            </div>
+                            
+                            <div class="mb-6">
+                                <label for="message" class="block mb-2 font-medium">Сообщение</label>
+                                <textarea id="message" rows="5" class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"></textarea>
+                            </div>
+                            
+                            <button type="submit" class="w-full px-6 py-4 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 rounded-lg font-bold text-lg transition-all duration-300 transform hover:scale-[1.02]">
+                                Отправить сообщение
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Футер -->
+        <footer class="py-12 bg-black/80 backdrop-blur-lg">
+            <div class="container mx-auto px-6">
+                <div class="flex flex-col md:flex-row justify-between items-center">
+                    <div class="mb-6 md:mb-0">
+                        <div class="text-2xl font-bold mb-2">Портфолио верстальщика</div>
+                        <div class="opacity-70">© 2025 Все права защищены</div>
+                    </div>
+                    
+                    <div class="flex gap-6">
+                        <a href="https://github.com/KiryaBasik" class="w-10 h-10 rounded-full bg-gray-800 hover:bg-blue-600 flex items-center justify-center transition-all">
+                            <i class="fab fa-github"></i>
+                        </a>
+                        <a href="https://id.vk.com/account/#/main" class="w-10 h-10 rounded-full bg-gray-800 hover:bg-blue-400 flex items-center justify-center transition-all">
+                            <i class="fab fa-vk"></i>
+                        </a>
+                        <a href="https://web.telegram.org/k/#@KiryaBasik" class="w-10 h-10 rounded-full bg-gray-800 hover:bg-blue-500 flex items-center justify-center transition-all">
+                            <i class="fab fa-telegram"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+    
+    <script>
+        // TV эффект при загрузке
+        document.addEventListener('DOMContentLoaded', function() {
+            const tvEffect = document.querySelector('.tv-effect');
+            const tvChannel = document.querySelector('.tv-channel');
+            const mainContent = document.querySelector('.main-content');
+            
+            // Анимация включения телевизора
+            gsap.timeline()
+                .to(tvChannel, { opacity: 1, duration: 1, delay: 0.5 })
+                .to(tvChannel, { opacity: 0, duration: 0.5, delay: 2 })
+                .to(tvEffect, { opacity: 0, duration: 1, onComplete: function() {
+                    tvEffect.style.display = 'none';
+                    mainContent.classList.remove('opacity-0');
+                    
+                    // Инициализация анимаций после загрузки
+                    initAnimations();
+                }});
+            
+            // Имитация статики на телевизоре
+            setInterval(() => {
+                const static = document.querySelector('.tv-static');
+                static.style.backgroundPositionY = Math.random() * 10 + 'px';
+            }, 100);
+        });
+        
+        // Инициализация анимаций
+        function initAnimations() {
+            // Анимация появления элементов при скролле
+            gsap.registerPlugin(ScrollTrigger);
+            
+            gsap.utils.toArray('.project-card, .float, [class*="text-"]').forEach(el => {
+                gsap.from(el, {
+                    scrollTrigger: {
+                        trigger: el,
+                        start: "top 80%",
+                        toggleActions: "play none none none"
+                    },
+                    opacity: 0,
+                    y: 50,
+                    duration: 0.8,
+                    ease: "power2.out"
+                });
+            });
+            
+            // Анимация ховера на кнопках
+            const buttons = document.querySelectorAll('.btn-hover');
+            buttons.forEach(btn => {
+                btn.addEventListener('mouseenter', function() {
+                    gsap.to(this, { 
+                        scale: 1.05,
+                        boxShadow: '0 10px 20px rgba(0,0,0,0.3)',
+                        duration: 0.3
+                    });
+                });
+                
+                btn.addEventListener('mouseleave', function() {
+                    gsap.to(this, { 
+                        scale: 1,
+                        boxShadow: 'none',
+                        duration: 0.3
+                    });
+                });
+            });
+            
+            // Плавный скролл для якорей
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    const targetId = this.getAttribute('href');
+                    if (targetId === '#') return;
+                    
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 80,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+            
+            // Анимация фона героя
+            const heroSection = document.querySelector('section:first-of-type');
+            if (heroSection) {
+                gsap.to(heroSection.querySelector('div:nth-child(2)'), {
+                    scrollTrigger: {
+                        scrub: true
+                    },
+                    y: 100,
+                    scale: 1.1
+                });
+            }
+        }
+    </script>
+</body>
+</html>
